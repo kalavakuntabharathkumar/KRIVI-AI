@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ name }} - Portfolio (Dark)</title>
+  <style>
+    body {
+      background: #121212;
+      color: #e0e0e0;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    .profile {
+      max-width: 120px;
+      border-radius: 50%;
+    }
+    h2 {
+      color: #90caf9;
+      border-bottom: 1px solid #444;
+      padding-bottom: 5px;
+    }
+    ul {
+      list-style-type: disc;
+      margin-left: 1.5rem;
+    }
+    a {
+      color: #64b5f6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>{{ name }}</h1>
+    <p>{{ email }} | {{ phone }}</p>
+    {% if photo %}
+      <img src="{{ photo }}" class="profile" alt="Profile photo">
+    {% endif %}
+
+    <h2>Skills</h2>
+    {% if skills %}
+      <ul>
+        {% for skill in skills %}
+          <li>{{ skill }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No skills listed.</p>
+    {% endif %}
+
+    <h2>Projects</h2>
+    {% if projects %}
+      <ul>
+        {% for item in projects %}
+          {% if "http" in item %}
+            <li><a href="{{ item }}" target="_blank">{{ item }}</a></li>
+          {% else %}
+            <li>{{ item }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No projects listed.</p>
+    {% endif %}
+
+    <h2>Experience</h2>
+    {% if experience %}
+      <ul>
+        {% for item in experience %}
+          {% if "http" in item %}
+            <li><a href="{{ item }}" target="_blank">{{ item }}</a></li>
+          {% else %}
+            <li>{{ item }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No experience listed.</p>
+    {% endif %}
+
+    <h2>Certificates</h2>
+    {% if certificates %}
+      <ul>
+        {% for cert in certificates %}
+          {% if "http" in cert %}
+            <li><a href="{{ cert }}" target="_blank">{{ cert }}</a></li>
+          {% else %}
+            <li>{{ cert }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No certificates found.</p>
+    {% endif %}
+    <h2>Education</h2>
+{% if education %}
+  <ul>{% for edu in education %}<li>{{ edu }}</li>{% endfor %}</ul>
+{% else %}
+  <p>No education listed.</p>
+{% endif %}
+
+<h2>Languages</h2>
+{% if languages %}
+  <ul>{% for lang in languages %}<li>{{ lang }}</li>{% endfor %}</ul>
+{% else %}
+  <p>No languages listed.</p>
+{% endif %}
+
+
+    <h2>Links</h2>
+    {% if links %}
+      <ul>
+        {% for link in links %}
+          <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No links available.</p>
+    {% endif %}
+  </div>
+</body>
+</html>

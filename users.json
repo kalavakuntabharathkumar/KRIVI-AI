@@ -1,0 +1,50 @@
+{
+  "admin@gmail.com": {
+    "name": "Admin",
+    "password": "admin123",
+    "role": "admin",
+    "resumes": []
+  },
+  "bharathnewhere@gmail.com": {
+    "name": "bhargav",
+    "password": "asdfghjkl",
+    "role": "user",
+    "resumes": [
+      {
+        "filename": "Document-1-2.pdf",
+        "template": "portfolio_dark",
+        "html": "portfolio_1.html"
+      },
+      {
+        "filename": "resume _.pdf",
+        "template": "portfolio_light",
+        "html": "portfolio_2.html"
+      },
+      {
+        "filename": "resume _.pdf",
+        "template": "portfolio_light",
+        "html": "portfolio_3.html"
+      },
+      {
+        "filename": "Document-1.pdf",
+        "template": "portfolio_light",
+        "html": "portfolio_4.html"
+      },
+      {
+        "filename": "resume _.pdf",
+        "template": "portfolio_light",
+        "html": "portfolio_5.html"
+      },
+      {
+        "filename": "resume _.pdf",
+        "template": "portfolio_light",
+        "html": "portfolio_6.html"
+      },
+      {
+        "filename": "Document-1-2.pdf",
+        "template": "portfolio_light",
+        "html": "portfolio_7.html"
+      }
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Skills - Bharath Kumar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      transition: background-image 1s ease-in-out;
+      color: white;
+    }
+
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #00ffff;
+    }
+
+    header {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .skills-section {
+      background-color: rgba(0, 0, 0, 0.6);
+      margin: 30px auto;
+      max-width: 800px;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+
+    .skills-section ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .skills-section li {
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/home">Home</a>
+    <a href="/skills">Skills</a>
+    <a href="/projects">Projects</a>
+    <a href="/certificates">Certificates</a>
+    <a href="/experience">Experience</a>
+    <a href="/education">Education</a>
+    <a href="/languages">Languages</a>
+  </nav>
+
+  <header>Skills</header>
+
+  <section class="skills-section">
+    <ul>
+      <li><strong>Technical Skills:</strong> Core Java, Python, MySQL, HTML, CSS, Node.js, RESTful APIs</li>
+      <li><strong>Operating Systems:</strong> Linux/Unix (Shell Scripting), Windows (MS Office)</li>
+      <li><strong>Soft Skills:</strong> Communication, Leadership, Teamwork, Problem-solving</li>
+    </ul>
+  </section>
+
+  <script>
+    const skillImages = [
+      'https://images.unsplash.com/photo-1581091012184-7f98550f74d4?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1537432376769-00a2c7b67c90?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1603570419987-61b6f0ef7cd4?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1555949258-eb67b1ef0e32?auto=format&fit=crop&w=1920&q=80'
+    ];
+    let index = 0;
+    const changeBackground = () => {
+      document.body.style.backgroundImage = `url('${skillImages[index]}')`;
+      index = (index + 1) % skillImages.length;
+    };
+    changeBackground();
+    setInterval(changeBackground, 5000);
+  </script>
+</body>
+</html>

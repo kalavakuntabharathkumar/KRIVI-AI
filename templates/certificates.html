@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6688940424074874"
+     crossorigin="anonymous"></script>
+  <title>Certificates - Bharath Kumar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      transition: background-image 1s ease-in-out;
+      color: white;
+    }
+
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #00ffff;
+    }
+
+    header {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 25px;
+      text-align: center;
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    .certificates-box {
+      background-color: rgba(0, 0, 0, 0.6);
+      margin: 30px auto;
+      max-width: 800px;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    .certificates-box ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .certificates-box li {
+      margin: 15px 0;
+      font-size: 18px;
+    }
+
+    .certificates-box strong {
+      color: #00ffff;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/home">Home</a>
+    <a href="/skills">Skills</a>
+    <a href="/projects">Projects</a>
+    <a href="/certificates">Certificates</a>
+    <a href="/experience">Experience</a>
+    <a href="/education">Education</a>
+    <a href="/languages">Languages</a>
+  </nav>
+
+  <header>Certificates</header>
+
+  <section class="certificates-box">
+    <ul>
+      {% for cert in data.certificates %}
+      <li><strong>{{ cert.title }}</strong> - {{ cert.issuer }} ({{ cert.date }})</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <script>
+    const certImages = [
+      'https://images.unsplash.com/photo-1608889175689-3f037f27f41f?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1616627986314-1dbb0c8e6fa6?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1581091215367-59aa1fcbc181?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1510070009289-b5bc34383727?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1581090700227-1cc99f04d3d2?auto=format&fit=crop&w=1920&q=80'
+    ];
+    let index = 0;
+    const changeBackground = () => {
+      document.body.style.backgroundImage = `url('${certImages[index]}')`;
+      index = (index + 1) % certImages.length;
+    };
+    changeBackground();
+    setInterval(changeBackground, 5000);
+  </script>
+</body>
+</html>

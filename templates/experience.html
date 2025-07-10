@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Experience - Bharath Kumar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 1s ease-in-out;
+      color: white;
+    }
+
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #00ffff;
+    }
+
+    header {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      text-align: center;
+      font-size: 40px;
+      font-weight: bold;
+    }
+
+    .experience-box {
+      background-color: rgba(0, 0, 0, 0.6);
+      margin: 30px auto;
+      max-width: 800px;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    .experience-box ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .experience-box li {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .experience-box strong {
+      color: #00ffff;
+      font-size: 20px;
+      display: block;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/home">Home</a>
+    <a href="/skills">Skills</a>
+    <a href="/projects">Projects</a>
+    <a href="/certificates">Certificates</a>
+    <a href="/experience">Experience</a>
+    <a href="/education">Education</a>
+    <a href="/languages">Languages</a>
+  </nav>
+
+  <header>Experience</header>
+
+  <section class="experience-box">
+    <ul>
+      {% for job in data.experience %}
+      <li>
+        <strong>{{ job.title }} at {{ job.company }}</strong>
+        {{ job.duration }}<br>
+        {{ job.description }}
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <script>
+    const experienceImages = [
+      'https://images.unsplash.com/photo-1528479029150-9f23f7c9e9e4?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1573496799515-eebbb63814e6?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1560264280-88b68371db39?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1590650046871-92c8878f46d7?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1920&q=80'
+    ];
+    let index = 0;
+    function changeBackground() {
+      document.body.style.backgroundImage = `url('${experienceImages[index]}')`;
+      index = (index + 1) % experienceImages.length;
+    }
+    changeBackground();
+    setInterval(changeBackground, 5000);
+  </script>
+</body>
+</html>
