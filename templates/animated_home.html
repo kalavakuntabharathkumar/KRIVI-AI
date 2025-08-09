@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Animated Portfolio - Demo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;600&display=swap" rel="stylesheet">
+  <title>Bharath Kumar - Enhanced Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
       margin: 0;
@@ -12,12 +13,19 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --primary: #6a11cb;
+      --secondary: #2575fc;
+      --accent: #ff2d75;
+      --glass: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --text: #ffffff;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
     body {
       font-family: 'Raleway', sans-serif;
-      color: #fff;
-      background: linear-gradient(270deg, #1c92d2, #f2fcfe);
-      background-size: 400% 400%;
-      animation: animateBG 15s ease infinite;
+      color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -25,6 +33,11 @@
       align-items: center;
       text-align: center;
       padding: 2rem;
+      background: linear-gradient(45deg, #1c92d2, #2a2a72, #1c1c4f, #0c0c26);
+      background-size: 400% 400%;
+      animation: animateBG 15s ease infinite;
+      position: relative;
+      overflow: hidden;
     }
 
     @keyframes animateBG {
@@ -33,63 +46,387 @@
       100% { background-position: 0% 50%; }
     }
 
-    .profile-pic {
-      width: 150px;
-      height: 150px;
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.2) 100%);
+      z-index: -2;
+    }
+
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
       border-radius: 50%;
-      border: 4px solid white;
-      margin-bottom: 1rem;
-      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      opacity: 0.2;
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.2;
+      }
+      50% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0.2;
+      }
+    }
+
+    .container {
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 25px;
+      padding: 2.5rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow);
+      max-width: 800px;
+      width: 90%;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+      z-index: -1;
+      border-radius: 27px;
+      animation: gradientShift 8s ease infinite;
+      background-size: 400% 400%;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile-container {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .profile-pic {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 0 30px rgba(255,255,255,0.4);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+
+    .profile-pic::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+      z-index: -1;
+      animation: rotateBorder 6s linear infinite;
+    }
+
+    .profile-pic:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 50px rgba(255,255,255,0.6);
+    }
+
+    @keyframes rotateBorder {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     h1 {
-      font-size: 3rem;
-      font-weight: 600;
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(to right, #ffffff, #a8edea, #fed6e3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      letter-spacing: 1px;
     }
 
-    p.subtitle {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
+    .subtitle {
+      font-size: 1.6rem;
+      margin-bottom: 2rem;
       font-weight: 300;
-    }
-
-    .links a {
+      position: relative;
       display: inline-block;
-      margin: 0.5rem;
-      color: white;
-      background: rgba(0,0,0,0.3);
-      padding: 0.6rem 1.2rem;
-      border-radius: 30px;
-      text-decoration: none;
-      transition: all 0.3s ease;
     }
 
-    .links a:hover {
-      background: rgba(0,0,0,0.6);
+    .subtitle::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+
+    .links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin: 2rem 0;
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.9rem 1.8rem;
+      color: white;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.4s ease;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .link-btn:hover {
+      background: rgba(0, 0, 0, 0.5);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .link-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: 0.5s;
+      transform: translateX(-100%);
+    }
+
+    .link-btn:hover::before {
+      transform: translateX(100%);
+    }
+
+    .link-btn.email { background: rgba(106, 17, 203, 0.3); }
+    .link-btn.github { background: rgba(37, 117, 252, 0.3); }
+    .link-btn.linkedin { background: rgba(255, 45, 117, 0.3); }
+
+    .skills {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 2.5rem 0;
+    }
+
+    .skill-tag {
+      padding: 0.6rem 1.2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .skill-tag:hover {
+      background: rgba(255, 255, 255, 0.2);
       transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
     footer {
-      position: absolute;
-      bottom: 20px;
+      margin-top: 2rem;
       font-size: 0.9rem;
       color: rgba(255,255,255,0.7);
+      position: relative;
+      z-index: 2;
+    }
+
+    .floating {
+      animation: floating 6s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.8rem;
+      }
+      
+      .subtitle {
+        font-size: 1.3rem;
+      }
+      
+      .container {
+        padding: 1.8rem;
+      }
+      
+      .profile-pic {
+        width: 150px;
+        height: 150px;
+      }
+      
+      .link-btn {
+        padding: 0.8rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2.3rem;
+      }
+      
+      .subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .links {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .link-btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
-  <img src="profile.jpg" alt="Profile Photo" class="profile-pic">
-  <h1>Bharath Kumar Kalavakunta</h1>
-  <p class="subtitle">Full Stack Developer | AI Enthusiast</p>
-
-  <div class="links">
-    <a href="mailto:bharath@example.com">📧 Email</a>
-    <a href="https://github.com/kalavakuntabharathkumar" target="_blank">💻 GitHub</a>
-    <a href="https://linkedin.com/in/bharathkumar-kalavakunta" target="_blank">🔗 LinkedIn</a>
+  <div class="particles" id="particles"></div>
+  
+  <div class="container">
+    <div class="profile-container">
+      <div class="profile-pic floating">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Profile Photo" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+      </div>
+      <h1>Bharath Kumar Kalavakunta</h1>
+      <p class="subtitle">Full Stack Developer | AI Enthusiast</p>
+      
+      <div class="skills">
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">React</span>
+        <span class="skill-tag">Node.js</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Machine Learning</span>
+        <span class="skill-tag">Cloud Computing</span>
+      </div>
+    </div>
+    
+    <div class="links">
+      <a href="mailto:bharath@example.com" class="link-btn email">
+        <i class="fas fa-envelope"></i> Email
+      </a>
+      <a href="https://github.com/kalavakuntabharathkumar" target="_blank" class="link-btn github">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <a href="https://linkedin.com/in/bharathkumar-kalavakunta" target="_blank" class="link-btn linkedin">
+        <i class="fab fa-linkedin-in"></i> LinkedIn
+      </a>
+    </div>
   </div>
 
   <footer>
     &copy; Bharath Kumar 2025. All rights reserved.
   </footer>
+
+  <script>
+    // Create floating particles background
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random size between 5 and 50 pixels
+        const size = Math.random() * 45 + 5;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100 + 100}%`;
+        
+        // Random animation duration and delay
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 5;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${delay}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Initialize particles when page loads
+    window.addEventListener('load', createParticles);
+    
+    // Add floating animation to the subtitle
+    const subtitle = document.querySelector('.subtitle');
+    setTimeout(() => {
+      subtitle.classList.add('floating');
+    }, 1000);
+    
+    // Add animation to skills on hover
+    const skills = document.querySelectorAll('.skill-tag');
+    skills.forEach(skill => {
+      skill.addEventListener('mouseenter', () => {
+        skill.style.transform = 'translateY(-5px)';
+        skill.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
+      });
+      
+      skill.addEventListener('mouseleave', () => {
+        skill.style.transform = 'translateY(0)';
+        skill.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.2)';
+      });
+    });
+  </script>
 </body>
 </html>

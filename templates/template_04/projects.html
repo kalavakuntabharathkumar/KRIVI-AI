@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Projects - {{ data.name }}</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      font-family: 'Fira Code', monospace;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+      color: #7FDBFF;
+    }
+    nav {
+      background: #111;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    nav a {
+      color: #aaa;
+      text-decoration: none;
+      margin: 0 20px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    nav a:hover {
+      background: #0ff;
+      color: #000;
+      box-shadow: 0 0 10px #0ff;
+    }
+
+    .project {
+      border-left: 4px solid #0074D9;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .project a {
+      color: #7FDBFF;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Projects</h1>
+  <nav>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="skills.html">Skills</a>
+      <a href="projects.html">Projects</a>
+      <a href="experience.html">Experience</a>
+      <a href="education.html">Education</a>
+      <a href="certificates.html">Certificates</a>
+      <a href="languages.html">Languages</a>
+    </nav>
+    
+  </nav>
+  {% for p in data.projects %}
+    <div class="project">
+      <h2>{{ p.title }}</h2>
+      <p>{{ p.description }}</p>
+      {% if p.link %}
+        <p><a href="{{ p.link }}" target="_blank">View Project</a></p>
+      {% endif %}
+    </div>
+  {% else %}
+    <p>No projects found.</p>
+  {% endfor %}
+</body>
+</html>

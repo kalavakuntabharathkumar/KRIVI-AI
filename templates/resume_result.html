@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📈 Resume Score Result</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1e1e2f;
+      color: #fff;
+      padding: 50px;
+      text-align: center;
+    }
+    .box {
+      background: #2c2c3e;
+      border-radius: 12px;
+      padding: 30px;
+      display: inline-block;
+      box-shadow: 0 0 15px #00ffff44;
+    }
+    .score {
+      font-size: 3rem;
+      color: #00ffff;
+      margin: 10px 0;
+    }
+    .message {
+      font-size: 1.2rem;
+      margin-top: 20px;
+    }
+    a.button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #00ffff;
+      color: #000;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    a.button:hover {
+      background-color: #00cccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>✅ Resume Analysis</h1>
+  <div class="box">
+    <p>Your Original Resume Score:</p>
+    <div class="score">{{ score }}/100</div>
+    {% if improved_score %}
+      <p>Improved Resume Score:</p>
+      <div class="score">{{ improved_score }}/100</div>
+    {% endif %}
+    <div class="message">
+      {% if filename %}
+        ✅ You uploaded: <strong>{{ filename }}</strong><br><br>
+      {% endif %}
+      {% if improved_filename %}
+        🎯 Download your improved resume:
+        <a href="{{ url_for('static', filename='generated/' + improved_filename) }}" class="button" download>Download Improved Resume</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <a class="button" href="/dashboard">← Back to Dashboard</a>
+</body>
+</html>

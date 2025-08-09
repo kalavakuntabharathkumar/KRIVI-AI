@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Experience - {{ data.name }}</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0c0c1b;
+      color: #f0f0f0;
+      padding: 2rem;
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: #121229;
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0,255,255,0.3);
+      z-index: 10;
+    }
+    .navbar a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: #fff;
+      transition: color 0.3s;
+    }
+    .navbar a:hover {
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+    }
+    .timeline {
+      position: relative;
+      margin: 4rem auto;
+      max-width: 800px;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 15px;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, #00ffff, transparent);
+    }
+    .entry {
+      margin-bottom: 2rem;
+      position: relative;
+      padding-left: 2rem;
+    }
+    .entry::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: -1.3rem;
+      width: 12px;
+      height: 12px;
+      background: #00ffff;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00ffff;
+    }
+    .entry h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #00ffff;
+    }
+    .entry .details {
+      font-size: 0.95rem;
+      opacity: 0.8;
+      margin-bottom: 0.5rem;
+    }
+    .entry p {
+      margin-top: 0.5rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="skills.html">Skills</a>
+      <a href="projects.html">Projects</a>
+      <a href="experience.html">Experience</a>
+      <a href="education.html">Education</a>
+      <a href="certificates.html">Certificates</a>
+      <a href="languages.html">Languages</a>
+    </nav>
+    
+  </div>
+
+  <h1 style="text-align:center; margin-top: 2rem;">Experience</h1>
+  <div class="timeline">
+    {% for job in data.experience %}
+    <div class="entry">
+      <h3>{{ job.title }}</h3>
+      <div class="details">
+        {{ job.company }} | {{ job.duration }} | {{ job.location }}
+      </div>
+      <p>{{ job.description }}</p>
+    </div>
+    {% else %}
+    <div class="entry">
+      <h3>No Experience Found</h3>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>

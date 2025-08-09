@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Languages - {{ data.name }}</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #1f1c2c, #928dab);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.6rem;
+      margin: 40px 0 20px;
+      animation: fadeInDown 1s ease both;
+    }
+
+    .languages-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      padding-bottom: 40px;
+    }
+
+    .language-tag {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #ffffff33;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      color: #fff;
+      text-shadow: 0 0 6px #ffffff;
+      box-shadow: 0 0 10px #00ffe0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: floatUp 0.8s ease both;
+    }
+
+    .language-tag:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 14px #00fff7, 0 0 20px #00d9ff;
+    }
+
+    .no-languages {
+      text-align: center;
+      color: #ccc;
+      font-size: 1.2rem;
+      margin-top: 40px;
+    }
+    nav {
+      background: #111;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    nav a {
+      color: #aaa;
+      text-decoration: none;
+      margin: 0 20px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    nav a:hover {
+      background: #0ff;
+      color: #000;
+      box-shadow: 0 0 10px #0ff;
+    }
+
+    .back-home {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .button {
+      display: inline-block;
+      background: #00bcd4;
+      color: black;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .button:hover {
+      background: #00e5ff;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1> Languages</h1>
+  <nav>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="skills.html">Skills</a>
+      <a href="projects.html">Projects</a>
+      <a href="experience.html">Experience</a>
+      <a href="education.html">Education</a>
+      <a href="certificates.html">Certificates</a>
+      <a href="languages.html">Languages</a>
+    </nav>
+    
+  </nav>
+
+  {% if data.languages %}
+    <div class="languages-container">
+      {% for lang in data.languages %}
+        <div class="language-tag">{{ lang }}</div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="no-languages">Languages not found or not listed.</p>
+  {% endif %}
+
+  
+</body>
+</html>

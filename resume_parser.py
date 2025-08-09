@@ -1,140 +1,197 @@
-import os
-import fitz  # PyMuPDF
+# resume_parser.py  – enhanced to fix certificate parsing issue
+# -------------------------------------------------------------------
+
 import re
+from pathlib import Path
+from typing import List, Dict, Any
 
-def extract_text_from_pdf(pdf_path):
-    if not os.path.exists(pdf_path):
-        return ""
-    text = ""
-    try:
-        doc = fitz.open(pdf_path)
-        for page in doc:
-            text += page.get_text()
-    except Exception as e:
-        print(f"❌ Error reading PDF: {e}")
-    return text
+# -------- Regex helpers ---------------------------------------------------
+EMAIL_RX  = re.compile(r"[\w\.-]+@[\w\.-]+\.[A-Za-z]{2,}")
+PHONE_RX  = re.compile(r"(\+?\d[\d\s\-.]{7,}\d)")
+URL_RX    = re.compile(r"(https?://\S+|www\.\S+)")
+BULLET_RX = re.compile(r"^[•\-\u2022\d.\s]+")
 
-def clean_line(line):
-    return re.sub(r'^[•\-\.\u2022\s]+', '', line.strip())
+# -------- Canonical section names & aliases -------------------------------
 
-def normalize(line):
-    return ''.join(line.lower().split())
+SECTION_MAP = {
+    "summary": [
+        "summary", "objective", "profile", "professional summary"
+    ],
+    "skills": [
+        "skills", "technical skills", "key skills", "expertise"
+    ],
+    "projects": [
+        "projects", "project", "personal projects", "notable projects"
+    ],
+    "experience": [
+        "experience", "work experience", "professional experience",
+        "employment history", "work history"
+    ],
+    "education": [
+        "education", "academic", "qualifications", "academic background"
+    ],
+    "certificates": [
+        "certificates", "certificate", "certifications", "certification",
+        "awards", "award", "achievements", "recognitions", "certifications & awards"
+    ],
+    "languages": [
+        "languages", "language", "spoken languages"
+    ],
+    "links": [
+        "links", "contact", "social", "profiles", "online presence"
+    ]
+}
 
-def extract_section(lines, start_index, stop_words, limit=25):
-    section = []
-    for line in lines[start_index+1:]:
-        norm = normalize(line)
-        if any(norm.startswith(sw) for sw in stop_words):
-            break
-        if line:
-            section.append(clean_line(line))
-        if len(section) >= limit:
-            break
-    return section
+HEADER_LOOKUP = {alias: canon for canon, aliases in SECTION_MAP.items() for alias in aliases}
 
-def parse_resume_text(raw_text):
-    lines = [clean_line(line) for line in raw_text.splitlines() if line.strip()]
-    info = {
-        "name": "Your Name",
-        "title": "Your Role",
-        "email": "Not Available",
-        "phone": "Not Available",
-        "skills": [],
-        "projects": [],
-        "experience": [],
-        "certificates": [],
-        "education": [],
-        "languages": [],
-        "links": [],
-        "photo": None
+# -------- Public API -------------------------------------------------------
+
+def parse_resume_text(raw_text: str) -> Dict[str, Any]:
+    lines = _preprocess(raw_text)
+
+    # containers
+    buckets: Dict[str, List[str]] = {k: [] for k in SECTION_MAP}
+    misc: List[str] = []
+
+    current = None
+
+    for line in lines:
+        key = HEADER_LOOKUP.get(line.lower().rstrip(':'))
+        if key:
+            current = key
+            continue
+
+        if current:
+            if current == "certificates":
+                cleaned_line = line.strip("•*-· \t").strip()
+                if cleaned_line:
+                    buckets[current].append(cleaned_line)
+            else:
+                buckets[current].append(line)
+        else:
+            misc.append(line)
+
+        if URL_RX.search(line):
+            url = URL_RX.search(line).group(0).rstrip(".,)")
+            if url not in buckets["links"]:
+                buckets["links"].append(url)
+
+    data: Dict[str, Any] = {
+        "name"       : _guess_name(misc + buckets["summary"]),
+        "title"      : _guess_title(misc + buckets["summary"]),
+        "email"      : _first_match(EMAIL_RX, raw_text, default="Not Available"),
+        "phone"      : _first_match(PHONE_RX,  raw_text, default="Not Available"),
+        "summary"    : " ".join(buckets["summary"]).strip(),
+        "skills"     : _split_skills(buckets["skills"]),
+        "projects"   : _structure_projects(buckets["projects"]),
+        "experience" : _structure_experience(buckets["experience"]),
+        "education"  : _structure_education(buckets["education"]),
+        "certificates": [{"title": l} for l in buckets["certificates"]],
+        "languages"  : _split_simple(buckets["languages"]),
+        "links"      : buckets["links"],
+        "photo"      : None,
+        "misc"       : misc
     }
 
-    stop_words = [
-        "skills", "projects", "experience", "certificates", "education",
-        "languages", "awards", "links", "summary", "objectives", "profile"
-    ]
+    if not data["summary"]:
+        data["summary"] = "Experienced professional with a passion for excellence."
 
-    for i, line in enumerate(lines[:5]):
-        if info["name"] == "Your Name" and len(line.split()) >= 2:
-            info["name"] = line
-        elif info["title"] == "Your Role" and not any(x in line.lower() for x in ["@", "+91", "phone", "http", "www"]):
-            info["title"] = str(line).title()
+    return data
 
-    for i, line in enumerate(lines):
-        norm = normalize(line)
+# -------- Helper functions -------------------------------------------------
 
-        if info["email"] == "Not Available":
-            match = re.search(r'[\w\.-]+@[\w\.-]+\.\w+', line)
-            if match:
-                info["email"] = match.group(0)
+def _preprocess(text: str) -> List[str]:
+    cleaned = []
+    for raw in text.splitlines():
+        line = BULLET_RX.sub("", raw).strip()
+        if line:
+            cleaned.append(line)
+    return cleaned
 
-        if info["phone"] == "Not Available":
-            match = re.search(r'(\+91[-\s]?)?(\(?\d{2,5}\)?[-\s]?)?\d{3,5}[-\s]?\d{4,6}', line)
-            if match:
-                info["phone"] = match.group(0)
+def _first_match(rx: re.Pattern, text: str, *, default=""):
+    m = rx.search(text)
+    return m.group(0) if m else default
 
-        if "skill" in norm and not info["skills"]:
-            info["skills"] = extract_section(lines, i, stop_words)
+def _guess_name(lines: List[str]) -> str:
+    for l in lines[:6]:
+        if 2 <= len(l.split()) <= 5 and not any(ch.isdigit() or ch in "@" for ch in l):
+            return l.title()
+    return "Your Name"
 
-        elif "language" in norm and not info["languages"]:
-            info["languages"] = extract_section(lines, i, stop_words)
+def _guess_title(lines: List[str]) -> str:
+    for l in lines[:6]:
+        if any(k in l.lower() for k in ("developer", "engineer", "manager", "intern", "student")):
+            return l.title()
+    return "Professional"
 
-        elif any(k in norm for k in ["certificate", "award", "achievement"]) and not info["certificates"]:
-            raw_certs = extract_section(lines, i, stop_words)
-            info["certificates"] = [{"title": c, "issuer": "", "date": ""} for c in raw_certs]
+def _split_skills(sk_lines: List[str]) -> List[str]:
+    if not sk_lines:
+        return []
+    blob = " ".join(sk_lines)
+    parts = re.split(r",|/|;|\|", blob)
+    return [p.strip() for p in parts if p.strip()]
 
-        elif "education" in norm and not info["education"]:
-            raw_edu = extract_section(lines, i, stop_words)
-            structured = []
-            for edu_line in raw_edu:
-                degree = edu_line
-                institution = ""
-                year = ""
-                description = ""
-                if '-' in edu_line:
-                    parts = edu_line.split('-')
-                    degree = parts[0].strip()
-                    if len(parts) > 1:
-                        institution = parts[1].strip()
-                structured.append({
-                    "degree": degree,
-                    "institution": institution,
-                    "year": year,
-                    "description": description
-                })
-            info["education"] = structured
+def _split_simple(lines: List[str]) -> List[str]:
+    res: List[str] = []
+    for l in lines:
+        res.extend([p.strip() for p in re.split(r",|/|;", l) if p.strip()])
+    return res
 
-        elif "experience" in norm and not info["experience"]:
-            raw_exp = extract_section(lines, i, stop_words)
-            info["experience"] = [str(e) for e in raw_exp]
+def _structure_projects(lines: List[str]) -> List[Dict[str, str]]:
+    projects: List[Dict[str, str]] = []
+    current = None
+    for l in lines:
+        url = URL_RX.search(l)
+        if url:
+            if current:
+                current.setdefault("link", url.group(0))
+            continue
+        if l.endswith(":" ) or l.isupper():
+            if current:
+                projects.append(current)
+            current = {"title": l.rstrip(":"), "description": ""}
+        else:
+            if current is None:
+                current = {"title": l, "description": ""}
+            else:
+                current["description"] += ("\n" if current["description"] else "") + l
+    if current:
+        projects.append(current)
+    return projects
 
-        elif not info["projects"]:
-            project_lines = [l for l in lines if re.search(r'(technolog|source|github|project|system|application|api|model)', l, re.IGNORECASE)]
-            structured = []
-            current = {"title": "", "description": "", "tech": "", "link": ""}
-            for pline in project_lines:
-                if re.search(r'(github|http|www\.)', pline, re.IGNORECASE):
-                    current["link"] = pline
-                elif re.search(r'technolog|stack|tools', pline, re.IGNORECASE):
-                    current["tech"] = pline.split(":")[-1].strip()
-                elif ":" in pline:
-                    if current["title"]:
-                        structured.append(current)
-                        current = {"title": "", "description": "", "tech": "", "link": ""}
-                    parts = pline.split(":", 1)
-                    current["title"] = parts[0].strip()
-                    current["description"] = parts[1].strip()
-                else:
-                    current["description"] += " " + pline
+def _structure_experience(lines: List[str]) -> List[Dict[str, str]]:
+    out: List[Dict[str, str]] = []
+    current = None
+    for l in lines:
+        if any(k in l.lower() for k in ("intern", "developer", "engineer", "manager", "analyst", "consultant")):
+            if current:
+                out.append(current)
+            current = {"title": l, "company": "", "duration": "", "location": "", "description": ""}
+        elif re.search(r"\d{4}", l):
+            if current:
+                current["duration"] = l
+        elif any(w in l.lower() for w in ("city", "remote", "onsite", "hybrid")):
+            if current:
+                current["location"] = l
+        else:
+            if current is None:
+                current = {"title": l, "company": "", "duration": "", "location": "", "description": ""}
+            else:
+                current["description"] += ("\n" if current["description"] else "") + l
+    if current:
+        out.append(current)
+    return out
 
-            if current["title"]:
-                structured.append(current)
-            info["projects"] = structured
+def _structure_education(lines: List[str]) -> List[Dict[str, str]]:
+    edu: List[Dict[str, str]] = []
+    for l in lines:
+        parts = re.split(r" - | – | — ", l, maxsplit=2)
+        degree = parts[0].strip()
+        institution = parts[1].strip() if len(parts) > 1 else ""
+        year = parts[2].strip() if len(parts) > 2 else ""
+        edu.append({"degree": degree, "institution": institution, "year": year})
+    return edu
 
-        urls = re.findall(r'(https?://\S+|www\.\S+)', line)
-        for u in urls:
-            clean = u.strip().rstrip('.')
-            if clean not in info["links"]:
-                info["links"].append(clean)
-
-    return info
+def extract_text_from_pdf(pdf_path: str) -> str:
+    from pdfminer.high_level import extract_text
+    return extract_text(pdf_path)

@@ -46,5 +46,35 @@
         "html": "portfolio_7.html"
       }
     ]
+  },
+  "bharathkumarkalavakunta@gmail.com": {
+    "name": "Bharathkumar Kalavakunta",
+    "password": null,
+    "role": "user",
+    "resumes": []
+  },
+  "srilathakarri75@gmail.com": {
+    "name": "srilathakarri2003",
+    "password": null,
+    "role": "user",
+    "resumes": []
+  },
+  "chaitanyachittamuri5@gmail.com": {
+    "name": "chaitanyachittamuri",
+    "password": null,
+    "role": "user",
+    "resumes": []
+  },
+  "bharathkrishna931@gmail.com": {
+    "password": "asdfghjklpoi"
+  },
+  "kasushashanth35@gmail.com": {
+    "name": "kasushashanth",
+    "password": null,
+    "role": "user",
+    "resumes": []
+  },
+  "kingkong54.75g@gmail.com": {
+    "password": "12345678"
   }
 }

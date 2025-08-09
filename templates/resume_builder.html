@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Resume Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: white;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    form {
+      max-width: 500px;
+      margin: auto;
+      background: rgba(255,255,255,0.05);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00000050;
+    }
+    input, textarea {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      width: 100%;
+      padding: 0.7rem;
+      background: #00c6ff;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Build a High-Scoring Resume</h1>
+  <form action="/generate_resume" method="POST" enctype="multipart/form-data">
+    <label for="resume">Upload Your Resume (PDF):</label>
+    <input type="file" name="resume" required accept=".pdf" />
+    <button type="submit">Generate Improved Resume</button>
+  </form>
+  <form method="POST" enctype="multipart/form-data" action="/generate_resume">
+    <input type="file" name="resume" required />
+    <button type="submit">Generate Improved Resume</button>
+  </form>
+  
+</body>
+</html>

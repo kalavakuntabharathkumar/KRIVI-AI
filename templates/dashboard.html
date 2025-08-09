@@ -2,134 +2,159 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>User Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Krivi AI — Dashboard</title>
   <style>
-    body {
+    /* Reset & Layout */
+    * {
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #1d2b64, #f8cdda);
-      font-family: 'Segoe UI', sans-serif;
-      color: white;
-      min-height: 100vh;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      overflow: hidden;
+      height: 100vh;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
     }
 
-    .container {
-      margin-top: 4%;
-      max-width: 800px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 2rem 3rem;
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    h2, h3 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .form-check-inline {
-      margin-right: 1rem;
-    }
-
-    .form-control {
-      border-radius: 10px;
-    }
-
-    table {
-      border-radius: 10px;
+    /* 3D Animated Spheres */
+    .background {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -1;
       overflow: hidden;
     }
 
-    thead {
-      background-color: #ffffff10;
-      color: #ffffff;
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+      animation: float 20s linear infinite;
     }
 
-    tbody tr:hover {
-      background-color: #ffffff0a;
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) translateX(0) scale(0.5);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) translateX(50vw) scale(1.2);
+        opacity: 0;
+      }
     }
 
-    a.btn {
-      border-radius: 30px;
-      padding: 10px 25px;
+    .top-right {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #fff;
     }
 
-    .btn-light:hover, .btn-outline-light:hover {
-      transform: scale(1.05);
-      transition: all 0.2s ease-in-out;
-    }
-
-    .footer {
+    /* Upload UI */
+    .upload-box {
+      background:black;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(255,255,255,0.1);
       text-align: center;
-      margin-top: auto;
-      padding: 1rem;
-      color: rgba(255, 255, 255, 0.6);
+      z-index: 1;
+    }
+
+    .upload-box h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: burlywood;
+    }
+
+    .upload-box input,
+    .upload-box select,
+    .upload-box button {
+      display: block;
+      width: 100%;
+      margin: 15px 0;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    input[type="file"] {
+      background: burlywood;
+      color: #000;
+    }
+
+    select {
+      background: #f4f4f4;
+      color: #333;
+    }
+
+    button {
+      background: #ffa500;
+      color: #000;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #ffa500;
+      color: #000;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>👋 Welcome, {{ email }}</h2>
-    <p class="text-center">Upload your resume and photo to generate a stunning portfolio.</p>
+  <div class="top-right">Krivi AI</div>
 
-    <form action="/generate" method="post" enctype="multipart/form-data" class="mt-4">
-      <div class="d-flex justify-content-center mb-3">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="template" value="portfolio_light" checked>
-          <label class="form-check-label">Light</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="template" value="portfolio_dark">
-          <label class="form-check-label">Dark</label>
-        </div>
-      </div>
-
-      <input type="file" name="resume" class="form-control mb-3" required>
-      <input type="file" name="photo" class="form-control mb-3" accept=".jpg,.jpeg,.png">
-
-      <div class="text-center">
-        <button type="submit" class="btn btn-light">🎨 Generate Portfolio</button>
-      </div>
-    </form>
-
-    <h3 class="mt-5">📄 Your Past Portfolios</h3>
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover text-white">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Resume Name</th>
-            <th>Template</th>
-            <th>View</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in history %}
-          <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ item.filename }}</td>
-            <td>{{ item.template }}</td>
-            <td><a href="/portfolio/{{ item.html }}" target="_blank" class="btn btn-outline-light btn-sm">View</a></td>
-          </tr>
-          {% else %}
-          <tr><td colspan="4">No portfolios generated yet.</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    <div class="text-center mt-4">
-      <a href="/logout" class="btn btn-outline-light">🚪 Logout</a>
-    </div>
+  <!-- Animated Circles -->
+  <div class="background">
+    <!-- 30 Random White Circles -->
+    <script>
+      for (let i = 0; i < 30; i++) {
+        const circle = document.createElement('div');
+        circle.className = 'circle';
+        const size = Math.random() * 80 + 20;
+        circle.style.width = `${size}px`;
+        circle.style.height = `${size}px`;
+        circle.style.left = `${Math.random() * 100}vw`;
+        circle.style.animationDuration = `${10 + Math.random() * 20}s`;
+        document.querySelector('.background').appendChild(circle);
+      }
+    </script>
   </div>
+  <div class="dashboard-section">
+    <h2>Career Tools</h2>
+    <a href="/project-bank"><button>🚀 Project Bank</button></a>
+    <a href="/job-board"><button>🌐 Job Board</button></a>
+    <a href="/resume-builder"><button>🧾 Resume Builder</button></a>
+    <a href="/resume-analyzer"><button>📄 Resume Analyzer</button></a>
+  </div>
+  
 
-  <div class="footer">
-    © 2025 Gowthami • Personal Resume Portal
+
+  <!-- Upload & Template Select Form -->
+  <div class="upload-box">
+    <h1>Generate Your Portfolio</h1>
+    <form method="POST" action="/generate" enctype="multipart/form-data">
+      <input type="file" name="resume" required />
+      <select name="theme" required>
+        <option value="template_01">Template 1</option>
+        <option value="template_02">Template 2</option>
+        <option value="template_03">Template 3</option>
+        <option value="template_04">Template 4</option>
+        <option value="template_05">Template 5</option>
+      </select>
+      <button type="submit">🚀 Generate</button>
+    </form>
   </div>
 </body>
 </html>

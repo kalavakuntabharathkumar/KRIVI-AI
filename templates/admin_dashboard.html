@@ -2,46 +2,600 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: rgba(86, 124, 228, 0.8);
+      --secondary: rgba(136, 96, 208, 0.8);
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --glass-hover: rgba(255, 255, 255, 0.15);
+      --text: rgba(255, 255, 255, 0.95);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --card-bg: rgba(18, 18, 18, 0.7);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
     body {
-      background: #000000;
-      color: #ffffff;
+      background: radial-gradient(circle at top right, #0a0a2a, #000000);
+      color: var(--text);
+      min-height: 100vh;
       padding: 2rem;
-      font-family: 'Segoe UI';
+      position: relative;
+      overflow-x: hidden;
     }
-    h2 {
-      color: #90caf9;
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(86, 124, 228, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(136, 96, 208, 0.1) 0%, transparent 20%);
+      z-index: -1;
     }
+    
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      opacity: 0.1;
+      animation: float 20s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.1;
+      }
+      50% {
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0.1;
+      }
+    }
+    
+    .dashboard-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow);
+      animation: fadeInDown 0.8s ease-out;
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .admin-title {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 1.8rem;
+      font-weight: 600;
+      background: linear-gradient(45deg, var(--primary), #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .admin-title i {
+      font-size: 2.2rem;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--primary), var(--secondary), var(--primary));
+      z-index: -1;
+      border-radius: 17px;
+      animation: gradientShift 8s ease infinite;
+      background-size: 400% 400%;
+    }
+    
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--card-bg);
+      border-radius: 15px;
+      z-index: -1;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    .stat-label {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .table-container {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 25px;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    
+    .table-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+    
+    .table-title {
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
     .table {
-      background: #121212;
+      background: transparent;
       color: white;
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+    }
+    
+    .table thead {
+      background: rgba(86, 124, 228, 0.15);
+    }
+    
+    .table th {
+      padding: 15px 20px;
+      font-weight: 500;
+      text-align: left;
+      border-bottom: 2px solid rgba(86, 124, 228, 0.3);
+    }
+    
+    .table td {
+      padding: 15px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+    }
+    
+    .table tbody tr {
+      transition: all 0.3s ease;
+    }
+    
+    .table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateX(5px);
+    }
+    
+    .table tbody tr:hover td {
+      color: var(--primary);
+    }
+    
+    .role-badge {
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    
+    .role-admin {
+      background: rgba(86, 124, 228, 0.2);
+      color: var(--primary);
+    }
+    
+    .role-user {
+      background: rgba(46, 204, 113, 0.2);
+      color: #2ecc71;
+    }
+    
+    .role-moderator {
+      background: rgba(241, 196, 15, 0.2);
+      color: #f1c40f;
+    }
+    
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 2rem;
+    }
+    
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 25px;
+      background: transparent;
+      color: rgba(255, 107, 107, 0.9);
+      border: 1px solid rgba(255, 107, 107, 0.5);
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(255, 107, 107, 0.15);
+      color: #ff6b6b;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.2);
+    }
+    
+    .search-container {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .search-box {
+      flex: 1;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+      color: white;
+      font-size: 1rem;
+    }
+    
+    .search-box:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(86, 124, 228, 0.2);
+    }
+    
+    .filter-btn {
+      padding: 12px 25px;
+      background: rgba(86, 124, 228, 0.15);
+      color: var(--primary);
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-btn:hover {
+      background: rgba(86, 124, 228, 0.25);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+      
+      .stats-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .header {
+        padding: 1rem;
+      }
+      
+      .admin-title {
+        font-size: 1.5rem;
+      }
+      
+      .table th, .table td {
+        padding: 12px 15px;
+      }
+      
+      .search-container {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .table thead {
+        display: none;
+      }
+      
+      .table, .table tbody, .table tr, .table td {
+        display: block;
+        width: 100%;
+      }
+      
+      .table tr {
+        margin-bottom: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.05);
+      }
+      
+      .table td {
+        padding: 10px 15px;
+        text-align: right;
+        position: relative;
+        padding-left: 50%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: calc(50% - 15px);
+        text-align: left;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.7);
+      }
     }
   </style>
 </head>
 <body>
-  <h2>👑 Admin Panel</h2>
-  <table class="table mt-4">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Email</th>
-        <th>Name</th>
-        <th>Role</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for email, details in users.items() %}
-        <tr>
-          <td>{{ loop.index }}</td>
-          <td>{{ email }}</td>
-          <td>{{ details.name }}</td>
-          <td>{{ details.role }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <a href="/logout" class="btn btn-outline-light">Logout</a>
+  <div class="particles" id="particles"></div>
+  
+  <div class="dashboard-container">
+    <div class="header">
+      <div class="admin-title">
+        <i class="fas fa-crown"></i>
+        <span>Admin Dashboard</span>
+      </div>
+      <div class="admin-info">
+        <div class="admin-name">Welcome, Super Admin</div>
+        <div class="admin-email">admin@example.com</div>
+      </div>
+    </div>
+    
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <div class="stat-value">248</div>
+        <div class="stat-label">Total Users</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-user-shield"></i></div>
+        <div class="stat-value">12</div>
+        <div class="stat-label">Administrators</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+        <div class="stat-value">214</div>
+        <div class="stat-label">Active Users</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+        <div class="stat-value">+24%</div>
+        <div class="stat-label">Growth This Month</div>
+      </div>
+    </div>
+    
+    <div class="table-container">
+      <h3 class="table-title"><i class="fas fa-user-cog"></i> User Management</h3>
+      
+      <div class="search-container">
+        <input type="text" class="search-box" placeholder="Search users...">
+        <button class="filter-btn"><i class="fas fa-filter"></i> Filter</button>
+      </div>
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="#">1</td>
+            <td data-label="Email">john.doe@example.com</td>
+            <td data-label="Name">John Doe</td>
+            <td data-label="Role"><span class="role-badge role-admin">Administrator</span></td>
+            <td data-label="Status"><i class="fas fa-circle text-success"></i> Active</td>
+          </tr>
+          <tr>
+            <td data-label="#">2</td>
+            <td data-label="Email">sara.smith@example.com</td>
+            <td data-label="Name">Sara Smith</td>
+            <td data-label="Role"><span class="role-badge role-user">User</span></td>
+            <td data-label="Status"><i class="fas fa-circle text-success"></i> Active</td>
+          </tr>
+          <tr>
+            <td data-label="#">3</td>
+            <td data-label="Email">mike.johnson@example.com</td>
+            <td data-label="Name">Mike Johnson</td>
+            <td data-label="Role"><span class="role-badge role-moderator">Moderator</span></td>
+            <td data-label="Status"><i class="fas fa-circle text-warning"></i> Pending</td>
+          </tr>
+          <tr>
+            <td data-label="#">4</td>
+            <td data-label="Email">emma.wilson@example.com</td>
+            <td data-label="Name">Emma Wilson</td>
+            <td data-label="Role"><span class="role-badge role-user">User</span></td>
+            <td data-label="Status"><i class="fas fa-circle text-success"></i> Active</td>
+          </tr>
+          <tr>
+            <td data-label="#">5</td>
+            <td data-label="Email">david.brown@example.com</td>
+            <td data-label="Name">David Brown</td>
+            <td data-label="Role"><span class="role-badge role-user">User</span></td>
+            <td data-label="Status"><i class="fas fa-circle text-danger"></i> Inactive</td>
+          </tr>
+          <tr>
+            <td data-label="#">6</td>
+            <td data-label="Email">lisa.jones@example.com</td>
+            <td data-label="Name">Lisa Jones</td>
+            <td data-label="Role"><span class="role-badge role-moderator">Moderator</span></td>
+            <td data-label="Status"><i class="fas fa-circle text-success"></i> Active</td>
+          </tr>
+          <tr>
+            <td data-label="#">7</td>
+            <td data-label="Email">robert.wilson@example.com</td>
+            <td data-label="Name">Robert Wilson</td>
+            <td data-label="Role"><span class="role-badge role-admin">Administrator</span></td>
+            <td data-label="Status"><i class="fas fa-circle text-success"></i> Active</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="action-buttons">
+      <a href="/logout" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Create floating particles background
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 20;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random size between 5 and 50 pixels
+        const size = Math.random() * 45 + 5;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100 + 100}%`;
+        
+        // Random animation duration and delay
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 5;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${delay}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Initialize particles when page loads
+    window.addEventListener('load', createParticles);
+    
+    // Add hover effects to table rows
+    const tableRows = document.querySelectorAll('.table tbody tr');
+    tableRows.forEach(row => {
+      row.addEventListener('mouseenter', () => {
+        row.style.transform = 'translateX(5px)';
+      });
+      
+      row.addEventListener('mouseleave', () => {
+        row.style.transform = 'translateX(0)';
+      });
+    });
+  </script>
 </body>
 </html>

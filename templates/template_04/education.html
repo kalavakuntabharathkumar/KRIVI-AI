@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Education - {{ data.name }}</title>
+  <style>
+    body {
+      background: #001f3f;
+      color: white;
+      font-family: 'Fira Code', monospace;
+      padding: 40px;
+    }
+    nav {
+      background: #111;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    nav a {
+      color: #aaa;
+      text-decoration: none;
+      margin: 0 20px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    nav a:hover {
+      background: #0ff;
+      color: #000;
+      box-shadow: 0 0 10px #0ff;
+    }
+
+    h1 {
+      text-align: center;
+      color: #7FDBFF;
+    }
+    ul {
+      max-width: 600px;
+      margin: 0 auto;
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      margin: 10px 0;
+      background: rgba(255,255,255,0.05);
+      border-left: 4px solid #0074D9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Education</h1>
+  <nav>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="skills.html">Skills</a>
+      <a href="projects.html">Projects</a>
+      <a href="experience.html">Experience</a>
+      <a href="education.html">Education</a>
+      <a href="certificates.html">Certificates</a>
+      <a href="languages.html">Languages</a>
+    </nav>
+    
+  </nav>
+  <ul>
+    {% for edu in data.education %}
+      <li>{{ edu.degree }} - {{ edu.institution }} ({{ edu.year }})</li>
+    {% else %}
+      <li>No education data available.</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

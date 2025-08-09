@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{{ data.name | default('Portfolio') }}{% endblock %}</title>
+
+    {# if your Flask view passes a “css” string it's injected here #}
+    {% if css %}<style>{{ css|safe }}</style>{% endif %}
+
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>

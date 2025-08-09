@@ -1,0 +1,98 @@
+<!-- templates/template_03/skills.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Skills - {{ data.name }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      background: #f7f9fc;
+      color: #111;
+    }
+    body {
+  margin: 0;
+  background: linear-gradient(135deg, #ffffff 0%, #ffffff 50%, #00cfff 50%, #00cfff 100%);
+  background-size: cover;
+  font-family: 'Share Tech Mono', monospace;
+  color: #222;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Twinkling grid overlay */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: flickerGrid 6s ease-in-out infinite;
+  z-index: -1;
+}
+
+/* Subtle glowing grid animation */
+@keyframes flickerGrid {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.08; }
+}
+
+    .nav {
+      position: fixed;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 180px;
+      background: #ffffff;
+      border-left: 2px solid #ccc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+    }
+    .nav a {
+      margin: 10px 0;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    .nav a:hover {
+      color: #007BFF;
+    }
+    .content {
+      padding: 60px;
+      max-width: 800px;
+    }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="skills.html">Skills</a>
+      <a href="projects.html">Projects</a>
+      <a href="experience.html">Experience</a>
+      <a href="education.html">Education</a>
+      <a href="certificates.html">Certificates</a>
+      <a href="languages.html">Languages</a>
+    </nav>
+    
+  </div>
+  <div class="content">
+    <h1>Skills</h1>
+    <ul>
+      {% for skill in data.skills %}
+        <li>{{ skill }}</li>
+      {% else %}
+        <li>No skills listed.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</body>
+</html>

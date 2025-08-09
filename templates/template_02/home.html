@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ data.name }} - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+  margin: 0;
+  font-family: 'Share Tech Mono', monospace;
+  background: radial-gradient(ellipse at center, #0e0d1c 0%, #000010 100%);
+  color: #e2e2f2;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    rgba(138, 43, 226, 0.07),
+    rgba(138, 43, 226, 0.07) 1px,
+    transparent 2px,
+    transparent 60px
+  );
+  animation: twinkle 60s linear infinite;
+  z-index: -1;
+}
+
+@keyframes twinkle {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 1000px 1000px;
+  }
+}
+
+nav {
+  background: rgba(15, 0, 35, 0.95);
+  display: flex;
+  justify-content: center;
+  padding: 14px 0;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 2px 10px #3400ff55;
+}
+
+nav a {
+  color: #a9b8ff;
+  text-decoration: none;
+  margin: 0 18px;
+  padding: 10px 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+nav a:hover {
+  background: #8f00ff;
+  color: white;
+  box-shadow: 0 0 16px #8f00ff;
+}
+
+.content {
+  padding: 50px 30px;
+  max-width: 900px;
+  margin: auto;
+}
+
+h1 {
+  font-size: 32px;
+  color: #bbddff;
+  border-bottom: 2px solid #8f00ff;
+  padding-bottom: 12px;
+  margin-bottom: 35px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 16px;
+  padding: 14px 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 5px solid #8f00ff;
+  box-shadow: 0 0 12px rgba(143, 0, 255, 0.25);
+  color: #d0d2f0;
+  border-radius: 6px;
+}
+
+  </style>
+</head>
+
+<body>
+  <nav>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="skills.html">Skills</a>
+      <a href="projects.html">Projects</a>
+      <a href="experience.html">Experience</a>
+      <a href="education.html">Education</a>
+      <a href="certificates.html">Certificates</a>
+      <a href="languages.html">Languages</a>
+    </nav>
+    
+  </nav>
+
+  <div class="hero">
+    <h1>{{ data.name }}</h1>
+    <h2>{{ data.title }}</h2>
+
+    <div class="links">
+      <p><strong>Email:</strong> {{ data.email }}</p>
+      <p><strong>Phone:</strong> {{ data.phone }}</p>
+      <p><strong>Links:</strong></p>
+      <ul>
+        {% for link in data.links %}
+          <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
