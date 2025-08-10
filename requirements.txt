@@ -4,3 +4,4 @@ PyMuPDF
 gunicorn
 requests
 reportlab
+dotenv
