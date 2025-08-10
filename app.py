@@ -6,7 +6,7 @@ from flask import (
     redirect, session, url_for
 )
 import os, json, random, zipfile, re
-import request
+import requests
 import base64
 
 from datetime import datetime
