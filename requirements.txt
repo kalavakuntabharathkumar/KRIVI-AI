@@ -5,3 +5,5 @@ gunicorn
 requests
 reportlab
 dotenv
+request
+flask_mail
